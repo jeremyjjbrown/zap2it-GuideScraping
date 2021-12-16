@@ -2,3 +2,8 @@
 zap2itconfig.ini
 xmlguide.xmltv
 *.swp
+
+.idea/
+__pycache__/
+madison.ini
+milwaukee.ini

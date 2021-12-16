@@ -18,6 +18,8 @@ import sys, getopt
 #Libraries for historical copies
 import datetime, os
 from xml.sax.saxutils import escape
+import logging
+
 
 def sanitizeData(data):
 	#https://stackoverflow.com/questions/1091945/what-characters-do-i-need-to-escape-in-xml-documents
@@ -69,7 +71,7 @@ def buildXMLProgram(event, channelId, optLanguage):
 			episode = str(event["program"]["episode"])
 
 	except KeyError:
-		print("no season for:" + event["program"]["title"])
+		logging.exeption("no season for:" + event["program"]["title"])
 
 	for category in event["filter"]:
 		xml = xml + "\t\t" + '<category lang="en">' + html.unescape(category.replace('filter-','')) + '</category>' + "\n"
@@ -179,7 +181,7 @@ def createXML(optConfigFile, optGuideFile, optLanguage):
 
     while(closestTimestamp < endTimestamp):
 
-        print("Load guide for time: " + str(closestTimestamp)  + ' - ' + str(endTimestamp))
+        logging.info("Load guide for time: " + str(closestTimestamp)  + ' - ' + str(endTimestamp))
         #build parameters for grid call
         parameters = {
             'Activity_ID': 1,
@@ -241,7 +243,6 @@ def createXML(optConfigFile, optGuideFile, optLanguage):
         fileName = os.path.join(outputDir,item)
         if os.path.isfile(fileName) & item.endswith('.xmltv') & (os.stat(fileName).st_mtime < time.time() - (int(Config.get("prefs","historicalGuideDays")) * 86400)):
             os.remove(fileName)
-    sys.exit()
 
 
 if __name__ == "__main__":
